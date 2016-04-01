@@ -4,7 +4,7 @@ import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.GET;
 
-public interface HttpstatApi {
+public interface MyAPI {
 
     @GET("/200")
     void get200(Callback<Response> callback);

@@ -35,43 +35,18 @@
             android:text="No, api down"/>
     </RadioGroup>
 
-
-    <TextView
+    <Button
+        android:id="@+id/button_request_working"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Go Ahead! Try a request"/>
-
-    <RadioGroup
-        android:id="@+id/radio_group_request"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <RadioButton
-            android:id="@+id/radio_working"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Use working API (returns 200)"/>
-
-        <RadioButton
-            android:id="@+id/radio_broken"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Use broken API (returns 503)"/>
-
-        <RadioButton
-            android:id="@+id/radio_unreachable"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Use unreachable API (throws exception)"/>
-    </RadioGroup>
+        android:text="Make working request"/>
 
     <Button
-        android:id="@+id/button_request"
+        android:id="@+id/button_request_failing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Request!"/>
+        android:text="Make failing request"/>
 
     <TextView
         android:id="@+id/text_status"
