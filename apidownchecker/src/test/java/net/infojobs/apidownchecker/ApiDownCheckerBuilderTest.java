@@ -1,7 +1,5 @@
 package net.infojobs.apidownchecker;
 
-import net.infojobs.apidownchecker.HttpValidator;
-
 import org.junit.Test;
 
 import okhttp3.OkHttpClient;
@@ -19,10 +17,10 @@ public class ApiDownCheckerBuilderTest {
 
     @Test
     public void testBuilderWithValidators() throws Exception {
-        net.infojobs.apidownchecker.ApiValidator apiValidator = mock(net.infojobs.apidownchecker.ApiValidator.class);
-        net.infojobs.apidownchecker.ApiValidator trustedValidator = mock(net.infojobs.apidownchecker.ApiValidator.class);
+        ApiValidator apiValidator = mock(ApiValidator.class);
+        ApiValidator trustedValidator = mock(ApiValidator.class);
 
-        net.infojobs.apidownchecker.ApiDownChecker checker = new net.infojobs.apidownchecker.ApiDownChecker.Builder()
+        ApiDownChecker checker = new ApiDownChecker.Builder()
                 .check(apiValidator)
                 .trust(trustedValidator)
                 .build();
@@ -33,13 +31,13 @@ public class ApiDownCheckerBuilderTest {
 
     @Test
     public void testBuilderWithEndpoints() throws Exception {
-        net.infojobs.apidownchecker.ApiDownChecker checker = new net.infojobs.apidownchecker.ApiDownChecker.Builder()
+        ApiDownChecker checker = new ApiDownChecker.Builder()
                 .check("http://my.api")
                 .trust("http://trusted.api")
                 .build();
 
-        net.infojobs.apidownchecker.HttpValidator trustedValidator = ((net.infojobs.apidownchecker.HttpValidator) checker.getTrustedValidator());
-        net.infojobs.apidownchecker.HttpValidator untrustedValidator = ((net.infojobs.apidownchecker.HttpValidator) checker.getUntrustedValidator());
+        HttpValidator trustedValidator = ((HttpValidator) checker.getTrustedValidator());
+        HttpValidator untrustedValidator = ((HttpValidator) checker.getUntrustedValidator());
 
         assertEquals("http://my.api", untrustedValidator.getEndpoint());
         assertEquals("http://trusted.api", trustedValidator.getEndpoint());
@@ -47,35 +45,35 @@ public class ApiDownCheckerBuilderTest {
 
     @Test
     public void testBuilderDefaultsToGoogleWithoutTrustParameter() throws Exception {
-        net.infojobs.apidownchecker.ApiDownChecker checker = new net.infojobs.apidownchecker.ApiDownChecker.Builder()
+        ApiDownChecker checker = new ApiDownChecker.Builder()
           .check("http://my.api")
           .build();
 
-        net.infojobs.apidownchecker.ApiValidator trustedValidator = checker.getTrustedValidator();
-        String endpoint = ((net.infojobs.apidownchecker.HttpValidator) trustedValidator).getEndpoint();
+        ApiValidator trustedValidator = checker.getTrustedValidator();
+        String endpoint = ((HttpValidator) trustedValidator).getEndpoint();
         assertEquals("https://google.com", endpoint);
     }
 
     @Test
     public void testBuilderWithTrustGoogle() throws Exception {
-        net.infojobs.apidownchecker.ApiDownChecker checker = new net.infojobs.apidownchecker.ApiDownChecker.Builder()
+        ApiDownChecker checker = new ApiDownChecker.Builder()
                 .check("http://my.api")
                 .trustGoogle()
                 .build();
 
-        net.infojobs.apidownchecker.ApiValidator trustedValidator = checker.getTrustedValidator();
-        String endpoint = ((net.infojobs.apidownchecker.HttpValidator) trustedValidator).getEndpoint();
+        ApiValidator trustedValidator = checker.getTrustedValidator();
+        String endpoint = ((HttpValidator) trustedValidator).getEndpoint();
         assertEquals("https://google.com", endpoint);
     }
 
     @Test
     public void testBuilderWithTrustGoogleAmen() throws Exception {
-        net.infojobs.apidownchecker.ApiDownChecker checker = new net.infojobs.apidownchecker.ApiDownChecker.Builder()
+        ApiDownChecker checker = new ApiDownChecker.Builder()
                 .check("http://my.api")
                 .inGoogleWeTrust()
                 .build();
 
-        net.infojobs.apidownchecker.ApiValidator trustedValidator = checker.getTrustedValidator();
+        ApiValidator trustedValidator = checker.getTrustedValidator();
         String endpoint = ((HttpValidator) trustedValidator).getEndpoint();
         assertEquals("https://google.com", endpoint);
     }
@@ -84,7 +82,7 @@ public class ApiDownCheckerBuilderTest {
     public void testBuilderWithCustomOkClient() throws Exception {
         OkHttpClient client = spy(new OkHttpClient());
 
-        net.infojobs.apidownchecker.ApiDownChecker checker = new net.infojobs.apidownchecker.ApiDownChecker.Builder()
+        ApiDownChecker checker = new ApiDownChecker.Builder()
           .check("http://my.api")
           .trust("http://trusted.api")
           .withClient(client)
@@ -98,7 +96,7 @@ public class ApiDownCheckerBuilderTest {
 
     @Test(expected = IllegalStateException.class)
     public void testBuilderFailsWithoutCheckParameter() throws Exception {
-        new net.infojobs.apidownchecker.ApiDownChecker.Builder()
+        new ApiDownChecker.Builder()
           .trust("http://trusted.api")
           .build();
     }

@@ -7,9 +7,9 @@ import okhttp3.Response;
 
 public class ApiDownInterceptor implements Interceptor {
 
-    private final net.infojobs.apidownchecker.ApiDownChecker apiDownChecker;
+    private final ApiDownChecker apiDownChecker;
 
-    private ApiDownInterceptor(net.infojobs.apidownchecker.ApiDownChecker apiDownChecker) {
+    private ApiDownInterceptor(ApiDownChecker apiDownChecker) {
         this.apiDownChecker = apiDownChecker;
     }
 
@@ -38,13 +38,13 @@ public class ApiDownInterceptor implements Interceptor {
     }
 
     public static class Builder {
-        private net.infojobs.apidownchecker.ApiDownChecker apiDownChecker;
+        private ApiDownChecker apiDownChecker;
 
         public ApiDownInterceptor build() {
             return new ApiDownInterceptor(apiDownChecker);
         }
 
-        public Builder checkWith(net.infojobs.apidownchecker.ApiDownChecker apiDownChecker) {
+        public Builder checkWith(ApiDownChecker apiDownChecker) {
             this.apiDownChecker = apiDownChecker;
             return this;
         }

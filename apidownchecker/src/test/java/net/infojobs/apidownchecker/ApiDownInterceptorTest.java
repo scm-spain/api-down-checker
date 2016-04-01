@@ -2,8 +2,6 @@ package net.infojobs.apidownchecker;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
-import net.infojobs.apidownchecker.ApiDownInterceptor;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,12 +39,12 @@ public class ApiDownInterceptorTest {
 
     @Test(expected = net.infojobs.apidownchecker.ApiDownException.class)
     public void default_interceptor_throws_exception_when_request_unsuccessful_if_api_down() throws Exception {
-        net.infojobs.apidownchecker.ApiDownChecker apiDownChecker = new net.infojobs.apidownchecker.ApiDownChecker.Builder()
+        ApiDownChecker apiDownChecker = new ApiDownChecker.Builder()
           .check(BROKEN_API_URL)
           .trust(WORKING_API_URL)
           .build();
 
-        net.infojobs.apidownchecker.ApiDownInterceptor interceptor = net.infojobs.apidownchecker.ApiDownInterceptor.create()
+        ApiDownInterceptor interceptor = ApiDownInterceptor.create()
           .checkWith(apiDownChecker)
           .build();
 
@@ -55,12 +53,12 @@ public class ApiDownInterceptorTest {
 
     @Test
     public void default_interceptor_doesnt_throw_exception_when_request_unsuccessful_if_api_up() throws Exception {
-        net.infojobs.apidownchecker.ApiDownChecker apiDownChecker = new net.infojobs.apidownchecker.ApiDownChecker.Builder()
+        ApiDownChecker apiDownChecker = new ApiDownChecker.Builder()
           .check(WORKING_API_URL)
           .trust(WORKING_API_URL)
           .build();
 
-        net.infojobs.apidownchecker.ApiDownInterceptor interceptor = net.infojobs.apidownchecker.ApiDownInterceptor.create()
+        ApiDownInterceptor interceptor = ApiDownInterceptor.create()
           .checkWith(apiDownChecker)
           .build();
 
@@ -69,12 +67,12 @@ public class ApiDownInterceptorTest {
 
     @Test
     public void default_interceptor_doesnt_throw_exception_when_request_successful() throws Exception {
-        net.infojobs.apidownchecker.ApiDownChecker apiDownChecker = new net.infojobs.apidownchecker.ApiDownChecker.Builder()
+        ApiDownChecker apiDownChecker = new ApiDownChecker.Builder()
           .check(WORKING_API_URL)
           .trust(WORKING_API_URL)
           .build();
 
-        net.infojobs.apidownchecker.ApiDownInterceptor interceptor = net.infojobs.apidownchecker.ApiDownInterceptor.create()
+        ApiDownInterceptor interceptor = ApiDownInterceptor.create()
           .checkWith(apiDownChecker)
           .build();
 
@@ -83,19 +81,19 @@ public class ApiDownInterceptorTest {
 
     @Test(expected = net.infojobs.apidownchecker.ApiDownException.class)
     public void default_interceptor_throws_exception_when_request_fails_if_api_down() throws Exception {
-        net.infojobs.apidownchecker.ApiDownChecker apiDownChecker = new net.infojobs.apidownchecker.ApiDownChecker.Builder()
+        ApiDownChecker apiDownChecker = new ApiDownChecker.Builder()
           .check(BROKEN_API_URL)
           .trust(WORKING_API_URL)
           .build();
 
-        net.infojobs.apidownchecker.ApiDownInterceptor interceptor = net.infojobs.apidownchecker.ApiDownInterceptor.create()
+        ApiDownInterceptor interceptor = ApiDownInterceptor.create()
           .checkWith(apiDownChecker)
           .build();
 
         executeFailingRequest(interceptor);
     }
 
-    private void executeWorkingRequest(net.infojobs.apidownchecker.ApiDownInterceptor interceptor) throws IOException {
+    private void executeWorkingRequest(ApiDownInterceptor interceptor) throws IOException {
         stubFor(get(urlEqualTo("/method"))
           .willReturn(aResponse()
             .withStatus(200))
@@ -103,7 +101,7 @@ public class ApiDownInterceptorTest {
         executeRequest(interceptor);
     }
 
-    private void executeUnsuccessfulRequest(net.infojobs.apidownchecker.ApiDownInterceptor interceptor) throws IOException {
+    private void executeUnsuccessfulRequest(ApiDownInterceptor interceptor) throws IOException {
         stubFor(get(urlEqualTo("/method"))
           .willReturn(aResponse()
             .withStatus(500))
@@ -111,7 +109,7 @@ public class ApiDownInterceptorTest {
         executeRequest(interceptor);
     }
 
-    private void executeRequest(net.infojobs.apidownchecker.ApiDownInterceptor interceptor) throws IOException {
+    private void executeRequest(ApiDownInterceptor interceptor) throws IOException {
         OkHttpClient client = new OkHttpClient.Builder()
           .addInterceptor(interceptor)
           .build();

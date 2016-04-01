@@ -12,17 +12,17 @@ import static org.mockito.Mockito.when;
 public class ApiDownCheckerTest {
 
     @Mock
-    net.infojobs.apidownchecker.ApiValidator untrustedApi;
+    ApiValidator untrustedApi;
 
     @Mock
-    net.infojobs.apidownchecker.ApiValidator trustedApi;
+    ApiValidator trustedApi;
 
-    private net.infojobs.apidownchecker.ApiDownChecker apiDownChecker;
+    private ApiDownChecker apiDownChecker;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        apiDownChecker = new net.infojobs.apidownchecker.ApiDownChecker(untrustedApi, trustedApi);
+        apiDownChecker = new ApiDownChecker(untrustedApi, trustedApi);
     }
 
     @Test
