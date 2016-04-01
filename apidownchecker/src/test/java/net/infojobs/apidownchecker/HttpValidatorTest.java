@@ -1,4 +1,4 @@
-package net.infojobs;
+package net.infojobs.apidownchecker;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
@@ -22,7 +22,7 @@ public class HttpValidatorTest {
 
     private static final int CLIENT_TIMEOUT = 1;
 
-    private HttpValidator httpValidator;
+    private net.infojobs.apidownchecker.HttpValidator httpValidator;
     private OkHttpClient okHttpClient;
 
     @Rule
@@ -31,7 +31,7 @@ public class HttpValidatorTest {
     @Before
     public void setUp() throws Exception {
         okHttpClient = new OkHttpClient.Builder().readTimeout(CLIENT_TIMEOUT, TimeUnit.SECONDS).build();
-        httpValidator = new HttpValidator(okHttpClient, "http://localhost:8080/ping");
+        httpValidator = new net.infojobs.apidownchecker.HttpValidator(okHttpClient, "http://localhost:8080/ping");
     }
 
     @Test
@@ -75,7 +75,7 @@ public class HttpValidatorTest {
     @Test
     public void is_not_ok_when_host_not_found() throws Exception {
         // throws UnknownHostException
-        httpValidator = new HttpValidator(okHttpClient, "http://nonexistinghost/ping");
+        httpValidator = new net.infojobs.apidownchecker.HttpValidator(okHttpClient, "http://nonexistinghost/ping");
 
         boolean isOk = httpValidator.isOk();
 

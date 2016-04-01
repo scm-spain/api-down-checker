@@ -1,4 +1,4 @@
-package net.infojobs.apidownchecker;
+package net.infojobs.apidownchecker.demo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import net.infojobs.ApiDownException;
+import net.infojobs.apidownchecker.ApiDownException;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;

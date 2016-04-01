@@ -1,4 +1,4 @@
-package net.infojobs;
+package net.infojobs.apidownchecker;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,17 +12,17 @@ import static org.mockito.Mockito.when;
 public class ApiDownCheckerTest {
 
     @Mock
-    ApiValidator untrustedApi;
+    net.infojobs.apidownchecker.ApiValidator untrustedApi;
 
     @Mock
-    ApiValidator trustedApi;
+    net.infojobs.apidownchecker.ApiValidator trustedApi;
 
-    private ApiDownChecker apiDownChecker;
+    private net.infojobs.apidownchecker.ApiDownChecker apiDownChecker;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        apiDownChecker = new ApiDownChecker(untrustedApi, trustedApi);
+        apiDownChecker = new net.infojobs.apidownchecker.ApiDownChecker(untrustedApi, trustedApi);
     }
 
     @Test

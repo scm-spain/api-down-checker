@@ -1,4 +1,4 @@
-package net.infojobs;
+package net.infojobs.apidownchecker;
 
 public interface ApiValidator {
 

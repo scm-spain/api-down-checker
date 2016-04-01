@@ -1,7 +1,6 @@
-package net.infojobs;
+package net.infojobs.apidownchecker;
 
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
 public class ApiDownChecker {
 

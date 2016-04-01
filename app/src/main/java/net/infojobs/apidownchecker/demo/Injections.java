@@ -1,9 +1,9 @@
-package net.infojobs.apidownchecker;
+package net.infojobs.apidownchecker.demo;
 
 import com.jakewharton.retrofit.Ok3Client;
 
-import net.infojobs.ApiDownChecker;
-import net.infojobs.ApiDownInterceptor;
+import net.infojobs.apidownchecker.ApiDownChecker;
+import net.infojobs.apidownchecker.ApiDownInterceptor;
 
 import okhttp3.OkHttpClient;
 import retrofit.RestAdapter;

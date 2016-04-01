@@ -1,4 +1,4 @@
-package net.infojobs;
+package net.infojobs.apidownchecker;
 
 import java.io.IOException;
 
