@@ -1,9 +1,12 @@
 package net.infojobs.apidownchecker.demo;
 
+import android.util.Log;
+
 import com.jakewharton.retrofit.Ok3Client;
 
 import net.infojobs.apidownchecker.ApiDownChecker;
 import net.infojobs.apidownchecker.ApiDownInterceptor;
+import net.infojobs.apidownchecker.Logger;
 
 import okhttp3.OkHttpClient;
 import retrofit.RestAdapter;
@@ -22,6 +25,12 @@ public class Injections {
         if (okHttpClient == null) {
             ApiDownChecker checker = new ApiDownChecker.Builder()
               .withClient(getBreakableHttpClient())
+              .logWith(new Logger() {
+                  @Override
+                  public void log(String message) {
+                      Log.w("ApiDown", message);
+                  }
+              })
               .check("http://httpstat.us/200")
               .trustGoogle()
               .build();

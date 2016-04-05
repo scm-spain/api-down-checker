@@ -22,7 +22,7 @@ public class ApiDownCheckerTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        apiDownChecker = new ApiDownChecker(untrustedApi, trustedApi);
+        apiDownChecker = new ApiDownChecker(untrustedApi, trustedApi, Logger.NONE);
     }
 
     @Test

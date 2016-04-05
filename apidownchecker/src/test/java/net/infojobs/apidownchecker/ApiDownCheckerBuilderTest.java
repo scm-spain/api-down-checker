@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -21,9 +22,9 @@ public class ApiDownCheckerBuilderTest {
         ApiValidator trustedValidator = mock(ApiValidator.class);
 
         ApiDownChecker checker = new ApiDownChecker.Builder()
-                .check(apiValidator)
-                .trust(trustedValidator)
-                .build();
+          .check(apiValidator)
+          .trust(trustedValidator)
+          .build();
 
         assertTrue(checker.getTrustedValidator() == trustedValidator);
         assertTrue(checker.getUntrustedValidator() == apiValidator);
@@ -32,9 +33,9 @@ public class ApiDownCheckerBuilderTest {
     @Test
     public void testBuilderWithEndpoints() throws Exception {
         ApiDownChecker checker = new ApiDownChecker.Builder()
-                .check("http://my.api")
-                .trust("http://trusted.api")
-                .build();
+          .check("http://my.api")
+          .trust("http://trusted.api")
+          .build();
 
         HttpValidator trustedValidator = ((HttpValidator) checker.getTrustedValidator());
         HttpValidator untrustedValidator = ((HttpValidator) checker.getUntrustedValidator());
@@ -57,9 +58,9 @@ public class ApiDownCheckerBuilderTest {
     @Test
     public void testBuilderWithTrustGoogle() throws Exception {
         ApiDownChecker checker = new ApiDownChecker.Builder()
-                .check("http://my.api")
-                .trustGoogle()
-                .build();
+          .check("http://my.api")
+          .trustGoogle()
+          .build();
 
         ApiValidator trustedValidator = checker.getTrustedValidator();
         String endpoint = ((HttpValidator) trustedValidator).getEndpoint();
@@ -69,9 +70,9 @@ public class ApiDownCheckerBuilderTest {
     @Test
     public void testBuilderWithTrustGoogleAmen() throws Exception {
         ApiDownChecker checker = new ApiDownChecker.Builder()
-                .check("http://my.api")
-                .inGoogleWeTrust()
-                .build();
+          .check("http://my.api")
+          .inGoogleWeTrust()
+          .build();
 
         ApiValidator trustedValidator = checker.getTrustedValidator();
         String endpoint = ((HttpValidator) trustedValidator).getEndpoint();
@@ -99,5 +100,32 @@ public class ApiDownCheckerBuilderTest {
         new ApiDownChecker.Builder()
           .trust("http://trusted.api")
           .build();
+    }
+
+    @Test
+    public void testBuilderWithLog() throws Exception {
+        Logger logger = new DummyLogger();
+        ApiDownChecker checker = new ApiDownChecker.Builder()
+          .check("http://my.api")
+          .logWith(logger)
+          .build();
+
+        assertSame(logger, checker.getLogger());
+    }
+
+    @Test
+    public void testBuilderWithNoneLogByDefault() throws Exception {
+        ApiDownChecker checker = new ApiDownChecker.Builder()
+          .check("http://my.api")
+          .build();
+
+        assertEquals(Logger.NONE, checker.getLogger());
+    }
+
+    private class DummyLogger implements Logger {
+        @Override
+        public void log(String message) {
+            //NA
+        }
     }
 }

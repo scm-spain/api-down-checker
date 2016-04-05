@@ -6,14 +6,31 @@ public class ApiDownChecker {
 
     private final ApiValidator untrustedApiValidator;
     private final ApiValidator trustedValidator;
+    private final Logger logger;
 
-    public ApiDownChecker(ApiValidator untrustedApiValidator, ApiValidator trustedValidator) {
+    public ApiDownChecker(ApiValidator untrustedApiValidator, ApiValidator trustedValidator, Logger logger) {
         this.untrustedApiValidator = untrustedApiValidator;
         this.trustedValidator = trustedValidator;
+        this.logger = logger;
     }
 
     public boolean isApiDown() {
-        return !untrustedApiValidator.isOk() && trustedValidator.isOk();
+        logger.log("Failure intercepted. Checking whether your API is down...");
+        boolean isUntrustedOk = untrustedApiValidator.isOk();
+        if (isUntrustedOk) {
+            logger.log("Untrusted validator is OK. False alarm.");
+            return false;
+        } else {
+            logger.log("Untrusted validator is not OK. Now checking trusted validator...");
+            boolean isTrustedOk = trustedValidator.isOk();
+            if (isTrustedOk) {
+                logger.log("Trusted validator is OK. Your API seems to be down!!");
+                return true;
+            } else {
+                logger.log("Trusted validator is not OK. Looks like it's not your API's fault.");
+                return false;
+            }
+        }
     }
 
     public ApiValidator getTrustedValidator() {
@@ -24,6 +41,10 @@ public class ApiDownChecker {
         return untrustedApiValidator;
     }
 
+    public Logger getLogger() {
+        return logger;
+    }
+
     public static class Builder {
 
         private ApiValidator untrustedValidator;
@@ -31,6 +52,7 @@ public class ApiDownChecker {
         private OkHttpClient okHttpClient;
         private String trustedUrl;
         private String untrustedUrl;
+        private Logger logger;
 
         public Builder check(ApiValidator untrustedValidator) {
             this.untrustedValidator = untrustedValidator;
@@ -79,7 +101,10 @@ public class ApiDownChecker {
             if (trustedValidator == null) {
                 trustedValidator = new HttpValidator(getHttpClient(), trustedUrl);
             }
-            return new ApiDownChecker(untrustedValidator, trustedValidator);
+            if (logger == null) {
+                logger = Logger.NONE;
+            }
+            return new ApiDownChecker(untrustedValidator, trustedValidator, logger);
         }
 
         private OkHttpClient getHttpClient() {
@@ -87,6 +112,11 @@ public class ApiDownChecker {
                 okHttpClient = new OkHttpClient();
             }
             return okHttpClient;
+        }
+
+        public Builder logWith(Logger logger) {
+            this.logger = logger;
+            return this;
         }
     }
 }
