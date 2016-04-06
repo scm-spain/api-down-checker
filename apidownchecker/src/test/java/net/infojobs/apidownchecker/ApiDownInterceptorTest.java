@@ -39,56 +39,40 @@ public class ApiDownInterceptorTest {
 
     @Test(expected = net.infojobs.apidownchecker.ApiDownException.class)
     public void default_interceptor_throws_exception_when_request_unsuccessful_if_api_down() throws Exception {
-        ApiDownChecker apiDownChecker = new ApiDownChecker.Builder()
+        ApiDownInterceptor interceptor = ApiDownChecker.create()
           .check(BROKEN_API_URL)
           .trust(WORKING_API_URL)
-          .build();
-
-        ApiDownInterceptor interceptor = ApiDownInterceptor.create()
-          .checkWith(apiDownChecker)
-          .build();
+          .buildInterceptor();
 
         executeUnsuccessfulRequest(interceptor);
     }
 
     @Test
     public void default_interceptor_doesnt_throw_exception_when_request_unsuccessful_if_api_up() throws Exception {
-        ApiDownChecker apiDownChecker = new ApiDownChecker.Builder()
+        ApiDownInterceptor interceptor = ApiDownChecker.create()
           .check(WORKING_API_URL)
           .trust(WORKING_API_URL)
-          .build();
-
-        ApiDownInterceptor interceptor = ApiDownInterceptor.create()
-          .checkWith(apiDownChecker)
-          .build();
+          .buildInterceptor();
 
         executeUnsuccessfulRequest(interceptor);
     }
 
     @Test
     public void default_interceptor_doesnt_throw_exception_when_request_successful() throws Exception {
-        ApiDownChecker apiDownChecker = new ApiDownChecker.Builder()
+        ApiDownInterceptor interceptor = ApiDownChecker.create()
           .check(WORKING_API_URL)
           .trust(WORKING_API_URL)
-          .build();
-
-        ApiDownInterceptor interceptor = ApiDownInterceptor.create()
-          .checkWith(apiDownChecker)
-          .build();
+          .buildInterceptor();
 
         executeWorkingRequest(interceptor);
     }
 
     @Test(expected = net.infojobs.apidownchecker.ApiDownException.class)
     public void default_interceptor_throws_exception_when_request_fails_if_api_down() throws Exception {
-        ApiDownChecker apiDownChecker = new ApiDownChecker.Builder()
+        ApiDownInterceptor interceptor = ApiDownChecker.create()
           .check(BROKEN_API_URL)
           .trust(WORKING_API_URL)
-          .build();
-
-        ApiDownInterceptor interceptor = ApiDownInterceptor.create()
-          .checkWith(apiDownChecker)
-          .build();
+          .buildInterceptor();
 
         executeFailingRequest(interceptor);
     }

@@ -13,6 +13,10 @@ public class ApiDownChecker {
     private boolean lastResult;
     private long lastCheckTimestamp;
 
+    public static ApiDownChecker.Builder create() {
+        return new ApiDownChecker.Builder();
+    }
+
     public ApiDownChecker(ApiValidator untrustedApiValidator, ApiValidator trustedValidator, Logger logger, DateProvider dateProvider) {
         this.untrustedApiValidator = untrustedApiValidator;
         this.trustedValidator = trustedValidator;
@@ -71,6 +75,9 @@ public class ApiDownChecker {
         private String untrustedUrl;
         private Logger logger;
 
+        private Builder() {
+        }
+
         public Builder check(ApiValidator untrustedValidator) {
             this.untrustedValidator = untrustedValidator;
             return this;
@@ -122,6 +129,13 @@ public class ApiDownChecker {
                 logger = Logger.NONE;
             }
             return new ApiDownChecker(untrustedValidator, trustedValidator, logger, DateProvider.SYSTEM);
+        }
+
+        public ApiDownInterceptor buildInterceptor() {
+            ApiDownChecker checker = build();
+            return ApiDownInterceptor.create()
+              .checkWith(checker)
+              .build();
         }
 
         private OkHttpClient getHttpClient() {

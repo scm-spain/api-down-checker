@@ -21,7 +21,7 @@ public class ApiDownCheckerBuilderTest {
         ApiValidator apiValidator = mock(ApiValidator.class);
         ApiValidator trustedValidator = mock(ApiValidator.class);
 
-        ApiDownChecker checker = new ApiDownChecker.Builder()
+        ApiDownChecker checker = ApiDownChecker.create()
           .check(apiValidator)
           .trust(trustedValidator)
           .build();
@@ -32,7 +32,7 @@ public class ApiDownCheckerBuilderTest {
 
     @Test
     public void testBuilderWithEndpoints() throws Exception {
-        ApiDownChecker checker = new ApiDownChecker.Builder()
+        ApiDownChecker checker = ApiDownChecker.create()
           .check("http://my.api")
           .trust("http://trusted.api")
           .build();
@@ -46,7 +46,7 @@ public class ApiDownCheckerBuilderTest {
 
     @Test
     public void testBuilderDefaultsToGoogleWithoutTrustParameter() throws Exception {
-        ApiDownChecker checker = new ApiDownChecker.Builder()
+        ApiDownChecker checker = ApiDownChecker.create()
           .check("http://my.api")
           .build();
 
@@ -57,7 +57,7 @@ public class ApiDownCheckerBuilderTest {
 
     @Test
     public void testBuilderWithTrustGoogle() throws Exception {
-        ApiDownChecker checker = new ApiDownChecker.Builder()
+        ApiDownChecker checker = ApiDownChecker.create()
           .check("http://my.api")
           .trustGoogle()
           .build();
@@ -69,7 +69,7 @@ public class ApiDownCheckerBuilderTest {
 
     @Test
     public void testBuilderWithTrustGoogleAmen() throws Exception {
-        ApiDownChecker checker = new ApiDownChecker.Builder()
+        ApiDownChecker checker = ApiDownChecker.create()
           .check("http://my.api")
           .inGoogleWeTrust()
           .build();
@@ -83,7 +83,7 @@ public class ApiDownCheckerBuilderTest {
     public void testBuilderWithCustomOkClient() throws Exception {
         OkHttpClient client = spy(new OkHttpClient());
 
-        ApiDownChecker checker = new ApiDownChecker.Builder()
+        ApiDownChecker checker = ApiDownChecker.create()
           .check("http://my.api")
           .trust("http://trusted.api")
           .withClient(client)
@@ -97,7 +97,7 @@ public class ApiDownCheckerBuilderTest {
 
     @Test(expected = IllegalStateException.class)
     public void testBuilderFailsWithoutCheckParameter() throws Exception {
-        new ApiDownChecker.Builder()
+        ApiDownChecker.create()
           .trust("http://trusted.api")
           .build();
     }
@@ -105,7 +105,7 @@ public class ApiDownCheckerBuilderTest {
     @Test
     public void testBuilderWithLog() throws Exception {
         Logger logger = new DummyLogger();
-        ApiDownChecker checker = new ApiDownChecker.Builder()
+        ApiDownChecker checker = ApiDownChecker.create()
           .check("http://my.api")
           .logWith(logger)
           .build();
@@ -115,7 +115,7 @@ public class ApiDownCheckerBuilderTest {
 
     @Test
     public void testBuilderWithNoneLogByDefault() throws Exception {
-        ApiDownChecker checker = new ApiDownChecker.Builder()
+        ApiDownChecker checker = ApiDownChecker.create()
           .check("http://my.api")
           .build();
 

@@ -23,22 +23,18 @@ public class Injections {
 
     public static OkHttpClient getOkHttpClient() {
         if (okHttpClient == null) {
-            ApiDownChecker checker = new ApiDownChecker.Builder()
-              .withClient(getBreakableHttpClient())
-              .logWith(new Logger() {
-                  @Override
-                  public void log(String message) {
-                      Log.w("ApiDown", message);
-                  }
-              })
-              .check("http://httpstat.us/200")
-              .trustGoogle()
-              .build();
-
             okHttpClient = new OkHttpClient.Builder()
-              .addInterceptor(ApiDownInterceptor.create()
-                .checkWith(checker)
-                .build())
+              .addInterceptor(ApiDownChecker.create()
+                .withClient(getBreakableHttpClient())
+                .logWith(new Logger() {
+                    @Override
+                    public void log(String message) {
+                        Log.w("ApiDown", message);
+                    }
+                })
+                .check("http://httpstat.us/200")
+                .trustGoogle()
+                .buildInterceptor())
               .build();
         }
         return okHttpClient;
