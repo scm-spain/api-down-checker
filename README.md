@@ -19,14 +19,10 @@ Automatically integrates with OkHttp or Retrofit.
 ### Usage
 Build an ApiDownChecker and add a ApiDownInterceptor to your OkHttpClient
 ```java
-ApiDownChecker checker = new ApiDownChecker.Builder()
-  .check("http://my.api/status") // It should return a 200 status code
-  .build();
-
 OkHttpClient okHttpClient = new OkHttpClient.Builder()
-  .addInterceptor(ApiDownInterceptor.create()
-    .checkWith(checker)
-    .build())
+  .addInterceptor(ApiDownChecker.create()
+    .check("http://my.api/status") // It should return a 200 status code
+    .buildInterceptor())
   .build();
 ```
 
