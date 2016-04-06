@@ -4,17 +4,34 @@ import okhttp3.OkHttpClient;
 
 public class ApiDownChecker {
 
+    private static final long KEEP_ALIVE_MILLIS = 10 * 1000;
+
     private final ApiValidator untrustedApiValidator;
     private final ApiValidator trustedValidator;
     private final Logger logger;
+    private final DateProvider dateProvider;
+    private boolean lastResult;
+    private long lastCheckTimestamp;
 
-    public ApiDownChecker(ApiValidator untrustedApiValidator, ApiValidator trustedValidator, Logger logger) {
+    public ApiDownChecker(ApiValidator untrustedApiValidator, ApiValidator trustedValidator, Logger logger, DateProvider dateProvider) {
         this.untrustedApiValidator = untrustedApiValidator;
         this.trustedValidator = trustedValidator;
         this.logger = logger;
+        this.dateProvider = dateProvider;
     }
 
-    public boolean isApiDown() {
+    public synchronized boolean isApiDown() {
+        long currentTime = dateProvider.now();
+        if (lastCheckTimestamp + KEEP_ALIVE_MILLIS >= currentTime) {
+            return lastResult;
+        } else {
+            lastCheckTimestamp = currentTime;
+            lastResult = requestIsApiDown();
+            return lastResult;
+        }
+    }
+
+    private boolean requestIsApiDown() {
         logger.log("Failure intercepted. Checking whether your API is down...");
         boolean isUntrustedOk = untrustedApiValidator.isOk();
         if (isUntrustedOk) {
@@ -104,7 +121,7 @@ public class ApiDownChecker {
             if (logger == null) {
                 logger = Logger.NONE;
             }
-            return new ApiDownChecker(untrustedValidator, trustedValidator, logger);
+            return new ApiDownChecker(untrustedValidator, trustedValidator, logger, DateProvider.SYSTEM);
         }
 
         private OkHttpClient getHttpClient() {
