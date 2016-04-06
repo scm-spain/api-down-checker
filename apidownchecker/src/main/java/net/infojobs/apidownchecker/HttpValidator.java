@@ -20,14 +20,18 @@ public class HttpValidator implements ApiValidator {
     @Override
     public boolean isOk() {
         Request request = new Request.Builder()
-                .url(endpoint)
-                .build();
+          .url(endpoint)
+          .build();
         try {
             Response response = httpClient.newCall(request).execute();
-            return response.isSuccessful();
+            return validateResponse(response);
         } catch (IOException e) {
             return false;
         }
+    }
+
+    protected boolean validateResponse(Response response) {
+        return response.isSuccessful();
     }
 
     public String getEndpoint() {
