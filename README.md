@@ -3,56 +3,36 @@
 
 This library let's you easily get notified in your client code when your API is not working, but some other trusted endpoint is. We use this to determine when the API is down.
 
-<br/>
-<p align="center">
-<b><a href="#features">Features</a></b>
-|
-<b><a href="#usage">Usage</a></b>
-|
-<b><a href="#download">Download</a></b>
-|
-<b><a href="#under-the-hood">Under the hood</a></b>
-|
-<b><a href="#customization">Customization</a></b>
-|
-<b><a href="#contributions">Contributions</a></b>
-</p>
-<br/>
+Automatically integrates with OkHttp or Retrofit.
 
+- [Overview](#overview)
+  - [Usage](#usage)
+  - [Download](#download)
+  - [Features](#features)
+- [Advanced](#advanced)
+  - [Under the hood](#under-the-hood)
+  - [Customization](#customization)
+  - [Contributions](#Contributions)
 
-### Features
-- Set your trusted and untrusted endpoints.
-- Checks connectivity to *Google.com* by default.
-- Customize the "is ok" criteria of the endpoints.
-- Add an [OkHttp](http://square.github.io/okhttp/) Interceptor to automatically perform the checking when you receive failing responses.
-- Caches the "is api down" result for 10 seconds to avoid doing too many requests.
-
+# Overview
 
 ### Usage
-Create a instance of ApiDownChecker
+Build an ApiDownChecker and add a ApiDownInterceptor to your OkHttpClient
 ```java
 ApiDownChecker checker = new ApiDownChecker.Builder()
-  .check("http://my.api/status")
-  .trustGoogle() // default if none specified
+  .check("http://my.api/status") // It should return a 200 status code
   .build();
-```
 
-Now you can use it on demand
-```java
-boolean isMyApiDown = checker.isApiDown();
-```
-
-
-Or you can let the library automatically check if your when it detects network or http errors by adding an interceptor to your OkHttpClient. When using the interceptor, you will receive an ApiDownException when performing a request
-
-```java
 OkHttpClient okHttpClient = new OkHttpClient.Builder()
   .addInterceptor(ApiDownInterceptor.create()
     .checkWith(checker)
     .build())
   .build();
-  
-// Then catch the exception when using the client...
+```
+
+
+You will receive an ApiDownException when performing a request:
+```java
 Request request = new Request.Builder()
   .get().url("http://my.api/method")
   .build();
@@ -72,6 +52,16 @@ And that's all! If you're using Retrofit you can handle the exception in your AP
 This will be changed soon, don't worry.
 
 
+### Features
+- Interceptor automatically notifies you when the API is down when your requests fail.
+- Set your trusted and untrusted endpoints.
+- Checks connectivity to *Google.com* by default.
+- Customize the "is ok" criteria of the endpoints.
+- Caches the "is api down" result for 10 seconds to avoid doing too many requests.
+
+
+# Advanced
+
 ### Under the hood
 
 What do you do when a web page doesn't load? You check [google.com](www.google.com) to see if it's that web's problem or your connection.
@@ -79,7 +69,7 @@ The idea behind this library is the same. You might have some backend system to 
 
 This library is based on two [ApiValidator](https://github.com/scm-spain/ApiDownChecker/blob/master/apidownchecker/src/main/java/net/infojobs/apidownchecker/ApiValidator.java) instances, a **trusted** and an **untrusted** validator, which are consulted to determine if your API is down. The **trusted** validator is someone you trust will *always* work, like google's home page. The **untrusted** validator represents your api, and tells you whether your API is responding properly or not.
 
-A validator is a simple interface that tells if it's working fine. 
+A validator is a simple interface that tells if it's working fine.
 ```java
 public interface ApiValidator {
     boolean isOk();
@@ -129,7 +119,9 @@ ApiDownChecker checker = new ApiDownChecker.Builder()
   .build();
 ```
 
-Note: when you pass a String as a parameter to `check()` or `trust()` a new HttpValidator is created for you.
+> Note: when you pass a String as a parameter to `check()` or `trust()` a new HttpValidator is created for you.
+
+There is a handy `.trustGoogle()` method that is just a better looking wrapper of `trust("https://google.com")`. It's actually the default behavior, so you don't need to add it.
 
 ##### OkHttpClient
 By default a new OkHttpClient is used when building ApiDownChecker. You can use a custom implementation by using `withClient()` in the builder.
@@ -159,6 +151,16 @@ ApiDownChecker checker = new ApiDownChecker.Builder()
   .build();
 ```
 
+You might see something like:
+
+> - Failure intercepted. Checking whether your API is down...
+> - Untrusted validator is OK. False alarm.
+
+or:
+
+> - Failure intercepted. Checking whether your API is down...
+> - Untrusted validator is not OK. Now checking trusted validator...
+> - Trusted validator is OK. Your API seems to be down!!
 
 ### Contributions
 For bugs, requests, questions and discussions please use the [Github Issues](https://github.com/scm-spain/ApiDownChecker/issues).
