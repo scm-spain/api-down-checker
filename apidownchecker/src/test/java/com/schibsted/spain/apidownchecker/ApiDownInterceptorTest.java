@@ -1,4 +1,4 @@
-package net.infojobs.apidownchecker;
+package com.schibsted.spain.apidownchecker;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
@@ -37,7 +37,7 @@ public class ApiDownInterceptorTest {
         );
     }
 
-    @Test(expected = net.infojobs.apidownchecker.ApiDownException.class)
+    @Test(expected = ApiDownException.class)
     public void default_interceptor_throws_exception_when_request_unsuccessful_if_api_down() throws Exception {
         ApiDownInterceptor interceptor = ApiDownChecker.create()
           .check(BROKEN_API_URL)
@@ -67,7 +67,7 @@ public class ApiDownInterceptorTest {
         executeWorkingRequest(interceptor);
     }
 
-    @Test(expected = net.infojobs.apidownchecker.ApiDownException.class)
+    @Test(expected = ApiDownException.class)
     public void default_interceptor_throws_exception_when_request_fails_if_api_down() throws Exception {
         ApiDownInterceptor interceptor = ApiDownChecker.create()
           .check(BROKEN_API_URL)

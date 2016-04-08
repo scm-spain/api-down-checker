@@ -1,4 +1,4 @@
-package net.infojobs.apidownchecker.demo;
+package com.schibsted.spain.apidownchecker.demo;
 
 import retrofit.Callback;
 import retrofit.client.Response;

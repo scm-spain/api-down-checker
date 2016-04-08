@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "net.infojobs.apidownchecker.demo"
+        applicationId "com.schibsted.spain.apidownchecker.demo"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1

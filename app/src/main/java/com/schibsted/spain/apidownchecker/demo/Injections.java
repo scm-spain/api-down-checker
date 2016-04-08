@@ -1,12 +1,11 @@
-package net.infojobs.apidownchecker.demo;
+package com.schibsted.spain.apidownchecker.demo;
 
 import android.util.Log;
 
 import com.jakewharton.retrofit.Ok3Client;
 
-import net.infojobs.apidownchecker.ApiDownChecker;
-import net.infojobs.apidownchecker.ApiDownInterceptor;
-import net.infojobs.apidownchecker.Logger;
+import com.schibsted.spain.apidownchecker.ApiDownChecker;
+import com.schibsted.spain.apidownchecker.Logger;
 
 import okhttp3.OkHttpClient;
 import retrofit.RestAdapter;

@@ -1,4 +1,4 @@
-package net.infojobs.apidownchecker;
+package com.schibsted.spain.apidownchecker;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
@@ -37,8 +37,8 @@ public class HttpValidatorTest {
     @Test
     public void is_ok_when_response_is_200() throws Exception {
         stubFor(get(urlEqualTo("/ping"))
-                .willReturn(aResponse()
-                        .withStatus(200))
+          .willReturn(aResponse()
+            .withStatus(200))
         );
 
         boolean isOk = httpValidator.isOk();
@@ -49,8 +49,8 @@ public class HttpValidatorTest {
     @Test
     public void is_not_ok_when_response_is_500() throws Exception {
         stubFor(get(urlEqualTo("/ping"))
-                .willReturn(aResponse()
-                        .withStatus(500))
+          .willReturn(aResponse()
+            .withStatus(500))
         );
 
         boolean isOk = httpValidator.isOk();
@@ -63,8 +63,8 @@ public class HttpValidatorTest {
         addRequestProcessingDelay((int) TimeUnit.SECONDS.toMillis(5));
 
         stubFor(get(urlEqualTo("/ping"))
-                .willReturn(aResponse()
-                        .withStatus(200))
+          .willReturn(aResponse()
+            .withStatus(200))
         );
 
         boolean isOk = httpValidator.isOk();

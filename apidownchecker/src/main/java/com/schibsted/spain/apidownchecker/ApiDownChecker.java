@@ -1,4 +1,4 @@
-package net.infojobs.apidownchecker;
+package com.schibsted.spain.apidownchecker;
 
 import okhttp3.OkHttpClient;
 
