@@ -1,4 +1,14 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.3.4'
+    }
+}
+
 apply plugin: 'java'
+apply plugin: 'com.novoda.bintray-release'
 
 sourceCompatibility = 1.7
 
@@ -12,4 +22,13 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
     testCompile 'com.github.tomakehurst:wiremock:1.57'
+}
+
+publish {
+    userOrg = 'schibstedspain'
+    groupId = 'com.schibsted.spain'
+    artifactId = 'api-down-checker'
+    publishVersion = '1.0.0'
+    desc = 'This library let\'s you easily get notified in your client code when your API is not working, but some other trusted endpoint is. We use this to determine when the API is down.'
+    website = 'https://github.com/scm-spain/api-down-checker'
 }
