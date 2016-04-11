@@ -1,6 +1,8 @@
 # Api Down Checker
 > Is my API down or what?
 
+[![Bintray](https://img.shields.io/bintray/v/schibstedspain/maven/api-down-checker.svg?maxAge=2592000)](https://bintray.com/schibstedspain/maven/api-down-checker/)
+
 This library let's you easily get notified in your client code when your API is not working, but some other trusted endpoint is. We use this to determine when the API is down.
 
 Automatically integrates with OkHttp or Retrofit.
@@ -12,7 +14,7 @@ Automatically integrates with OkHttp or Retrofit.
 - [Advanced](#advanced)
   - [Under the hood](#under-the-hood)
   - [Customization](#customization)
-  - [Contributions](#Contributions)
+  - [Contributions](#contributions)
 
 # Overview
 
@@ -43,9 +45,14 @@ And that's all! If you're using Retrofit you can handle the exception in your AP
 
 
 ### Download
-**Sorry!** As of right now the library isn't published to any dependency repository. [Grab the JAR](https://github.com/scm-spain/ApiDownChecker/releases) and import in into your project.
+You can import the latest version from jCenter:
+```
+dependencies {
+  compile 'com.schibsted.spain:api-down-checker:1.0.0'
+}
+```
 
-This will be changed soon, don't worry.
+You can also grab the JAR file from [GitHub releases](https://github.com/scm-spain/ApiDownChecker/releases).
 
 
 ### Features
