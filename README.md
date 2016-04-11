@@ -1,7 +1,7 @@
 # Api Down Checker
 > Is my API down or what?
 
-[![Bintray](https://img.shields.io/bintray/v/schibstedspain/maven/api-down-checker.svg?maxAge=2592000)](https://bintray.com/schibstedspain/maven/api-down-checker/)
+[![Bintray](https://img.shields.io/bintray/v/schibstedspain/maven/api-down-checker.svg?maxAge=2592000)](https://bintray.com/schibstedspain/maven/api-down-checker/) [![Build Status](https://travis-ci.org/scm-spain/api-down-checker.svg?branch=master)](https://travis-ci.org/scm-spain/api-down-checker)
 
 This library let's you easily get notified in your client code when your API is not working, but some other trusted endpoint is. We use this to determine when the API is down.
 
